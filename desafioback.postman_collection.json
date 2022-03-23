@@ -116,14 +116,22 @@
 					},
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRoMCIsImlkIjoxLCJkbmkiOiI3NjY1Mjc4NCJ9.TJa6elN2e1gbs8uiS-EWx4pehuVUJoHh8TP6Eui9nNE",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [
 							{
-								"key": "token",
-								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRoMCIsImlkIjoxLCJkbmkiOiI3NjY1Mjc4NCJ9.TJa6elN2e1gbs8uiS-EWx4pehuVUJoHh8TP6Eui9nNE",
-								"type": "text"
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -144,13 +152,6 @@
 							"port": "8080",
 							"path": [
 								"tipocambio"
-							],
-							"query": [
-								{
-									"key": "",
-									"value": "",
-									"disabled": true
-								}
 							]
 						}
 					},
@@ -207,11 +208,21 @@
 				{
 					"name": "UpdateTipoCambio",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRoMCIsImlkIjoxLCJkbmkiOiI3NjY1Mjc4NCJ9.TJa6elN2e1gbs8uiS-EWx4pehuVUJoHh8TP6Eui9nNE",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"id\": 1,\r\n  \"nombre\": \"sss\"\r\n}",
+							"raw": "{\r\n  \"id\": 2,\r\n  \"nombre\": \"sss\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -337,7 +348,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"fecha\": \"2022-03-21T00:04:58\",\r\n  \"monto\": 10,\r\n  \"moneda_origen\": {\r\n    \"id\": 2\r\n  },\r\n  \"moneda_destino\": {\r\n    \"id\": 3\r\n  },  \r\n  \"tipocambio\": {\r\n    \"id\": 4\r\n  },\r\n  \"usuario\": {\r\n    \"id\": 1\r\n  }\r\n}",
+							"raw": "{\r\n  \"fecha\": \"2022-03-21T00:04:58\",\r\n  \"monto\": 10,\r\n  \"idmoneda_origen\": 2,\r\n  \"idmoneda_destino\": 3,  \r\n  \"idtipocambio\": 4,\r\n  \"idusuario\": 1  \r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
