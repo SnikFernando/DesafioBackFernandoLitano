@@ -1,12 +1,7 @@
-FROM openjdk:8-jdk-alpine
-#RUN addgroup -S paymentchain && adduser -S admin -G paymentchain
-#USER admin:paymentchain
-copy "./target/desafio-0.0.1-SNAPSHOP.jar" "app.jar"
-expose 8080
-ENTRYPOINT [ "java", "-jar", "app.jar" ]
+FROM openjdk:11.0-jdk-slim-stretch
+run apt-get install -y tzdata
+env TZ America/Lima
+volume [ "/home" ]
+entrypoint [ "java", "-jar", "-Dspring.profile.active=release", "/home/banca-0.0.1-SNAPSHOT.jar" ]
 
-#VOLUME /tmp
-#ARG JAR_FILE=target/*.jar
-#ADD target/desafio-0.0.1-SNAPSHOP.jar app.jar
-#ENV JAVA_OPTS=""
-#ENTRYPOINT [ "java", "-jar", "java $JAVA_OPTS /app.jar" ]
+#CMD ["/bin/sh"]

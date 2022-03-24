@@ -3,6 +3,7 @@ package com.desafioback.banca.controller;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.desafioback.banca.entities.Response;
 import com.desafioback.banca.entities.Usuario;
 import com.desafioback.banca.repository.UsuarioRepository;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,52 +25,135 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioRestController {
-    @Autowired 
+
+    @Autowired
     UsuarioRepository usuarioRepository;
-    
+
     @GetMapping()
-    public List<Usuario> list() {
-        return usuarioRepository.findAll();
+    public ResponseEntity<Response> list() {
+        Response response = new Response();
+        try {
+            List<Usuario> save = usuarioRepository.findAll();
+            response.setCodestado(200);
+            response.setEstado("ok");
+            response.setMensaje("");
+            response.setToken("");
+            response.setData(save);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.setCodestado(500);
+            response.setEstado("Error Interno del Servidor");
+            response.setMensaje(e.getMessage());
+            response.setToken("");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+
     }
-    
+
     @GetMapping("/{id}")
-    public Usuario get(@PathVariable long id) {
-        return usuarioRepository.getById(id);
+    public ResponseEntity<Response> get(@PathVariable long id) {
+        Response response = new Response();
+        try {
+            Usuario save = usuarioRepository.getById(id);
+            if (save != null) {
+                response.setCodestado(200);
+                response.setEstado("ok");
+                response.setMensaje("");
+                response.setToken("");
+                response.setData(save);
+                return ResponseEntity.ok(response);
+            }
+            response.setCodestado(200);
+            response.setEstado("ok");
+            response.setMensaje("El usurio no existe");
+            response.setToken("");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        } catch (Exception e) {
+            response.setCodestado(500);
+            response.setEstado("Error Interno del Servidor");
+            response.setMensaje(e.getMessage());
+            response.setToken("");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
     }
-    
+
 //    @PutMapping("/{id}")
 //    public ResponseEntity<?> put(@PathVariable String id, @RequestBody Usuario input) {
 //        return null;
 //    }
-    
     @PostMapping
-    public ResponseEntity<?> post(@RequestBody Usuario input) {
-        Usuario save = usuarioRepository.save(input);
-        return ResponseEntity.ok(save);
+    public ResponseEntity<Response> post(@RequestBody Usuario input) {
+        Response response = new Response();
+        try {
+            Usuario existeUsuario = usuarioRepository.getCorreo(input.getCorreo());
+            if(existeUsuario!=null){
+                response.setCodestado(400);
+                response.setEstado("Bad Request");
+                response.setMensaje("El Usuario a crear ya existe");
+                response.setToken("");
+                response.setData(null);
+                return ResponseEntity.badRequest().body(response);
+            }
+            Usuario save = usuarioRepository.save(input);
+            response.setCodestado(200);
+            response.setEstado("ok");
+            response.setMensaje("");
+            response.setToken("");
+            response.setData(save);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.setCodestado(500);
+            response.setEstado("Error Interno del Servidor");
+            response.setMensaje(e.getMessage());
+            response.setToken("");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+
     }
-    
+
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Usuario input) {
-        Usuario save = usuarioRepository.Login(input.getCorreo(),input.getContrasena());
-         String token ="";
-        if(save.getId()!=0){
-            try {
+    public ResponseEntity<Response> login(@RequestBody Usuario input) {
+        Response response = new Response();
+        try {
+            Usuario save = usuarioRepository.Login(input.getCorreo(), input.getContrasena());
+            String token = "";
+            if (save != null) {
                 Algorithm algorithm = Algorithm.HMAC256("PAASSSSWORR123");
                 token = JWT.create()
                         .withClaim("id", save.getId())
                         .withClaim("dni", save.getDni())
                         .withIssuer("auth0")
                         .sign(algorithm);
-            } catch (JWTCreationException exception) {
-                return ResponseEntity.badRequest().body(exception.getMessage());
+                response.setCodestado(200);
+                response.setEstado("ok");
+                response.setMensaje("");
+                response.setToken(token);
+                response.setData(save);
+                return ResponseEntity.ok(response);
             }
+            response.setCodestado(200);
+            response.setEstado("ok");
+            response.setMensaje("El usurio no es valido");
+            response.setToken("");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        } catch (Exception e) {
+            response.setCodestado(500);
+            response.setEstado("Error Interno del Servidor");
+            response.setMensaje(e.getMessage());
+            response.setToken("");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
         }
-        return ResponseEntity.ok(token);
+
     }
-    
+
 //    @DeleteMapping("/{id}")
 //    public ResponseEntity<?> delete(@PathVariable String id) {
 //        return null;
 //    }
-    
 }

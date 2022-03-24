@@ -18,11 +18,45 @@ import javax.persistence.OneToOne;
 public class TipoCambio {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String Nombre;
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY,targetEntity = Transaccion.class)    
     @JoinColumn(name = "tipo_id", nullable = true)
     private Transaccion transaccion;
+
+    public TipoCambio() {
+    }
+
+    public TipoCambio(long id) {
+        this.id = id;
+        
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return Nombre;
+    }
+
+    public void setNombre(String Nombre) {
+        this.Nombre = Nombre;
+    }
+
+    public Transaccion getTransaccion() {
+        return transaccion;
+    }
+
+    public void setTransaccion(Transaccion transaccion) {
+        this.transaccion = transaccion;
+    }
+    
+    
 }

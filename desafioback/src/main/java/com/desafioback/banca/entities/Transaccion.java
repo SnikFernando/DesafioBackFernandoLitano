@@ -15,7 +15,7 @@ import lombok.Data;
 public class Transaccion {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String fecha;
     private double monto;
@@ -36,6 +36,22 @@ public class Transaccion {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
+    public Transaccion() {
+    }
+
+    public Transaccion(long id, String fecha, double monto, double montoCambio, TipoCambio tipocambio, Moneda moneda_origen, Moneda moneda_destino, Usuario usuario) {
+        this.id = id;
+        this.fecha = fecha;
+        this.monto = monto;
+        this.montoCambio = montoCambio;
+        this.tipocambio = tipocambio;
+        this.moneda_origen = moneda_origen;
+        this.moneda_destino = moneda_destino;
+        this.usuario = usuario;
+    }
+
+    
+    
     public long getId() {
         return id;
     }

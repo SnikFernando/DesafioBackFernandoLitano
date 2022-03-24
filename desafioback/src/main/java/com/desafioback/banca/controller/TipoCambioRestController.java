@@ -5,6 +5,8 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.desafioback.banca.DaoImp.TransaccionImp;
+import com.desafioback.banca.entities.Response;
 import com.desafioback.banca.entities.TipoCambio;
 import com.desafioback.banca.entities.Usuario;
 import com.desafioback.banca.repository.TipoCambioRepository;
@@ -13,6 +15,7 @@ import com.desafioback.banca.repository.UsuarioRepository;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,69 +35,163 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @RestController
 @RequestMapping("/tipocambio")
 public class TipoCambioRestController {
-    
-    @Autowired 
+
+    @Autowired
     TipoCambioRepository tipoCambioRepository;
     @Autowired
     UsuarioRepository usuarioRepository;
     
+    TransaccionImp transaccionImp = new TransaccionImp();
+    
     @GetMapping()
-    public List<TipoCambio> list(@RequestHeader(value = "token")  String token) {
-        
-       
-        try {
-            Algorithm algorithm = Algorithm.HMAC256("PAASSSSWORR123");
-            JWTVerifier verifier = JWT.require(algorithm)
-                    .withIssuer("auth0")
-                    .build(); //Reusable verifier instance
-           
-            DecodedJWT jwt = verifier.verify(token);
-            long id = jwt.getClaim("id").asLong();
-            Usuario usuario = usuarioRepository.getById(id );
-            if(usuario!=null){
-                return  tipoCambioRepository.findAll();
+    public ResponseEntity<Response> list(@RequestHeader("Authorization") String token) {
+        Response response = new Response();
+        try {           
+            long id = transaccionImp.Decode(token);
+            Usuario usuario = usuarioRepository.getById(id);
+            if (usuario != null) {
+                List<TipoCambio> save = tipoCambioRepository.findAll();
+                response.setCodestado(200);
+                response.setEstado("ok");
+                response.setMensaje("");
+                response.setToken("");
+                response.setData(save);
+                return ResponseEntity.ok(response);
+            } else {
+                response.setCodestado(400);
+                response.setEstado("Bad Request");
+                response.setMensaje("Data incorrecta");
+                response.setToken("");
+                response.setData(null);
+                return ResponseEntity.badRequest().body(response);
             }
-            return null;
-            
-        } catch (JWTVerificationException exception) {
-            return null;
-        }
-        
-    }
-    
-    @GetMapping("/{id}")
-    public TipoCambio get(@PathVariable long id) {
-        return tipoCambioRepository.getById(id);
-    }
-    
-    @PutMapping("/{id}")
-    public ResponseEntity<?> put(@PathVariable long id, @RequestBody TipoCambio input) {
-        try {
-            TipoCambio tipo = tipoCambioRepository.getById(id);
-            if(tipo!=null){
-                TipoCambio save = tipoCambioRepository.save(input);
-                return ResponseEntity.ok(save);
-            }
-            return ResponseEntity.badRequest().body("La Entidad a Actualizar no existe");
-            
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("La Entidad a Actualizar no existe");
-        }
-        
 
+        } catch (Exception e) {
+            response.setCodestado(500);
+            response.setEstado("Error Interno del Servidor");
+            response.setMensaje(e.getMessage());
+            response.setToken("");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
     }
-    
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Response> get(@PathVariable long id) {
+        Response response = new Response();
+        try {
+            TipoCambio save = tipoCambioRepository.getById(id);
+            if (save != null) {
+                response.setCodestado(200);
+                response.setEstado("ok");
+                response.setMensaje("");
+                response.setToken("");
+                response.setData(save);
+                return ResponseEntity.ok(response);
+            }
+            response.setCodestado(200);
+            response.setEstado("ok");
+            response.setMensaje("La Entidad no existe");
+            response.setToken("");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        } catch (Exception e) {
+            response.setCodestado(500);
+            response.setEstado("Error Interno del Servidor");
+            response.setMensaje(e.getMessage());
+            response.setToken("");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Response> put(@RequestHeader("Authorization") String token, @PathVariable long id, @RequestBody TipoCambio input) {
+        Response response = new Response();
+        try { 
+            long idUsuario = transaccionImp.Decode(token);
+            Usuario usuario = usuarioRepository.getById(idUsuario);
+            if (usuario != null) {
+                
+                TipoCambio tipo = tipoCambioRepository.getById(id);
+                if (tipo != null) {
+                    TipoCambio save = tipoCambioRepository.save(input);
+                    response.setCodestado(200);
+                    response.setEstado("ok");
+                    response.setMensaje("");
+                    response.setToken("");
+                    response.setData(save);
+                    return ResponseEntity.ok(response);
+                } else {
+                    response.setCodestado(200);
+                    response.setEstado("ok");
+                    response.setMensaje("La Entidad a Actualizar no existe");
+                    response.setToken("");
+                    response.setData(null);
+                    return ResponseEntity.badRequest().body(response);
+                }
+            }
+            else {
+                response.setCodestado(400);
+                response.setEstado("Bad Request");
+                response.setMensaje("Data incorrecta");
+                response.setToken("");
+                response.setData(null);
+                return ResponseEntity.badRequest().body(response);
+            }           
+            
+
+        } catch (Exception e) {
+            response.setCodestado(500);
+            response.setEstado("Error Interno del Servidor");
+            response.setMensaje(e.getMessage());
+            response.setToken("");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
     @PostMapping
-    public ResponseEntity<?> post(@RequestBody TipoCambio input) {
-    	TipoCambio save = tipoCambioRepository.save(input);
-        return ResponseEntity.ok(save);
+    public ResponseEntity<Response> post(@RequestBody TipoCambio input) {
+
+        Response response = new Response();
+        try {
+            TipoCambio save = tipoCambioRepository.save(input);
+            response.setCodestado(200);
+            response.setEstado("ok");
+            response.setMensaje("");
+            response.setToken("");
+            response.setData(save);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.setCodestado(500);
+            response.setEstado("Error Interno del Servidor");
+            response.setMensaje(e.getMessage());
+            response.setToken("");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
     }
-    
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable long id) {
-        
-        tipoCambioRepository.deleteById(id);
-        return ResponseEntity.ok("se Elinmino correctamente");
+    public ResponseEntity<Response> delete(@PathVariable long id) {
+        Response response = new Response();
+        try {
+            tipoCambioRepository.deleteById(id);
+            response.setCodestado(200);
+            response.setEstado("ok");
+            response.setMensaje("Se elimino Correctamente");
+            response.setToken("");
+            response.setData(null);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.setCodestado(500);
+            response.setEstado("Error Interno del Servidor");
+            response.setMensaje(e.getMessage());
+            response.setToken("");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
     }
-    
+
 }

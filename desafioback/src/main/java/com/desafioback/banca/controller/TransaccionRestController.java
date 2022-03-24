@@ -7,8 +7,10 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.desafioback.banca.DaoImp.TransaccionImp;
 import com.desafioback.banca.entities.Moneda;
+import com.desafioback.banca.entities.Response;
 import com.desafioback.banca.entities.TipoCambio;
 import com.desafioback.banca.entities.Transaccion;
+import com.desafioback.banca.entities.TransaccionDtoImp;
 import com.desafioback.banca.entities.Usuario;
 import com.desafioback.banca.repository.MonedaRepository;
 import com.desafioback.banca.repository.TipoCambioRepository;
@@ -19,17 +21,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.client.RestTemplate;
 
 /**
  *
  * @author GAMER HP
  */
+ 
 @RestController
 @RequestMapping("/transaccion")
 public class TransaccionRestController {
@@ -42,62 +44,127 @@ public class TransaccionRestController {
     MonedaRepository monedaRepository;
     @Autowired
     TipoCambioRepository tipoCambioRepository;
-    
-    
+
     TransaccionImp transaccionImp = new TransaccionImp();
 
     @GetMapping()
-    public List<Transaccion> list() {
-//        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmZXJuYW5kbyIsImlkIjoyLCJkbmkiOiI3NjY1Mjc4NCJ9.g93gf4gPxGiQZNzHGZMVM6KYstuuOi9EFIsQI0bvYcs";
-//        try {
-//            Algorithm algorithm = Algorithm.HMAC256("secret");
-//            JWTVerifier verifier = JWT.require(algorithm)
-//                    .withIssuer("auth0")
-//                    .build(); //Reusable verifier instance
-//            DecodedJWT jwt = verifier.verify(token);
-//            long id = jwt.getClaim("id").asLong();
-//            Usuario usuario = usuarioRepository.getById(id );
-//            if(usuario!=null){
-                return transaccionRepository.findAll();
-//            }
-//            return null;
-            
-//        } catch (JWTVerificationException exception) {
-//            return null;
-//        }
+    public ResponseEntity<Response> list() {
+        Response response = new Response();
+        try {
+            List<Transaccion> save = transaccionRepository.findAll();
+            response.setCodestado(200);
+            response.setEstado("ok");
+            response.setMensaje("");
+            response.setToken("");
+            response.setData(save);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.setCodestado(500);
+            response.setEstado("Error Interno del Servidor");
+            response.setMensaje(e.getMessage());
+            response.setToken("");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+
     }
 
     @GetMapping("/{id}")
-    public Transaccion get(@PathVariable long id) {
-        return transaccionRepository.getById(id);
-        
+    public ResponseEntity<Response> get(@PathVariable long id) {
+        Response response = new Response();
+        try {
+            Transaccion save = transaccionRepository.getById(id);
+            if (save != null) {
+                response.setCodestado(200);
+                response.setEstado("ok");
+                response.setMensaje("");
+                response.setToken("");
+                response.setData(save);
+                return ResponseEntity.ok(response);
+            }
+            response.setCodestado(200);
+            response.setEstado("ok");
+            response.setMensaje("La Entidad no existe");
+            response.setToken("");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        } catch (Exception e) {
+            response.setCodestado(500);
+            response.setEstado("Error Interno del Servidor");
+            response.setMensaje(e.getMessage());
+            response.setToken("");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 
 //    @PutMapping("/{id}")
 //    public ResponseEntity<?> put(@PathVariable String id, @RequestBody Transaccion input) {
 //        return null;
 //    }
-
     @PostMapping
-    public ResponseEntity<?> post(@RequestBody Transaccion input) {
-        
-        Moneda monedaorigen = monedaRepository.getById(input.getMoneda_origen().getId());
-        Moneda monedadestino = monedaRepository.getById(input.getMoneda_destino().getId());
-        TipoCambio tipo = tipoCambioRepository.getById(input.getTipocambio().getId());
-        Usuario usuario = usuarioRepository.getById(input.getUsuario().getId());
-        double monto = transaccionImp.Calculo(monedaorigen,monedadestino,tipo,usuario,input);        
-        if (monto != 0) {
-            input.setMontoCambio(monto);
-            Transaccion save = transaccionRepository.save(input);
-            return ResponseEntity.ok(transaccionRepository.getById(save.getId()));
+    public ResponseEntity<Response> post(@RequestBody TransaccionDtoImp input) {
+        Response response = new Response();
+        try {
+            Moneda monedaorigen = monedaRepository.getById(input.getIdmoneda_origen());
+            Moneda monedadestino = monedaRepository.getById(input.getIdmoneda_destino());
+            TipoCambio tipo = tipoCambioRepository.getById(input.getIdtipocambio());
+            Usuario usuario = usuarioRepository.getById(input.getIdusuario());
+            double MontoCambio = 0;
+            if (monedaorigen != null && monedadestino != null && tipo != null && usuario != null) {
+                MontoCambio = transaccionImp.Calculo(monedaorigen, monedadestino, tipo, usuario, input);
+                if (MontoCambio != 0) {
+                    input.setMontoCambio(MontoCambio);
+                    Transaccion transaccion = new Transaccion();
+                    transaccion.setMoneda_origen(new Moneda(input.getIdmoneda_origen()));
+                    transaccion.setMoneda_destino(new Moneda(input.getIdmoneda_destino()));
+                    transaccion.setTipocambio(new TipoCambio(input.getIdtipocambio()));
+                    transaccion.setUsuario(new Usuario(input.getIdusuario()));
+                    transaccion.setFecha(input.getFecha());
+                    transaccion.setMonto(input.getMonto());
+                    transaccion.setMontoCambio(MontoCambio);
+                    Transaccion save = transaccionRepository.save(transaccion);
+                    save.setMoneda_origen(monedaorigen);
+                    save.setMoneda_destino(monedadestino);
+                    save.setTipocambio(tipo);
+                    save.setUsuario(usuario);
+                    response.setCodestado(200);
+                    response.setEstado("ok");
+                    response.setMensaje("");
+                    response.setToken("");
+                    response.setData(save);
+                    return ResponseEntity.ok(response);
+                } else {
+                    response.setCodestado(400);
+                    response.setEstado("bad Request");
+                    response.setMensaje("verificar data, Error al ejecutar operacion");
+                    response.setToken("");
+                    response.setData(null);
+                    return ResponseEntity.badRequest().body(response);
+                }
+
+            } else {
+                response.setCodestado(400);
+                response.setEstado("bad Request");
+                response.setMensaje("Id Incorrecto, verificar data");
+                response.setToken("");
+                response.setData(null);
+                return ResponseEntity.badRequest().body(response);
+            }
+
+        } catch (Exception e) {
+            response.setCodestado(500);
+            response.setEstado("Error Interno del Servidor");
+            response.setMensaje(e.getMessage());
+            response.setToken("");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
         }
-        return ResponseEntity.badRequest().body("El tipo de transaccion no esta disponible");
-        
+
     }
 
 //    @DeleteMapping("/{id}")
 //    public ResponseEntity<?> delete(@PathVariable String id) {
 //        return null;
 //    }
-
 }

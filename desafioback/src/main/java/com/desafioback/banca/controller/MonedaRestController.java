@@ -1,6 +1,7 @@
 package com.desafioback.banca.controller;
 
 import com.desafioback.banca.entities.Moneda;
+import com.desafioback.banca.entities.Response;
 import com.desafioback.banca.repository.MonedaRepository;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,34 +22,89 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RestController
 @RequestMapping("/moneda")
 public class MonedaRestController {
-    
-    @Autowired 
+
+    @Autowired
     MonedaRepository monedaRepository;
-    
+
     @GetMapping()
-    public List<Moneda> list() {
-        return monedaRepository.findAll();
+    public ResponseEntity<Response> list() {
+        Response response = new Response();
+        try {
+            List<Moneda> save = monedaRepository.findAll();
+            response.setCodestado(200);
+            response.setEstado("ok");
+            response.setMensaje("");
+            response.setToken("");
+            response.setData(save);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.setCodestado(500);
+            response.setEstado("Error Interno del Servidor");
+            response.setMensaje(e.getMessage());
+            response.setToken("");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+
     }
-    
+
     @GetMapping("/{id}")
-    public Moneda get(@PathVariable long id) {
-        return monedaRepository.getById(id);
+    public ResponseEntity<Response> get(@PathVariable long id) {
+        Response response = new Response();
+        try {
+            Moneda save = monedaRepository.getById(id);
+            if (save != null) {
+                response.setCodestado(200);
+                response.setEstado("ok");
+                response.setMensaje("");
+                response.setToken("");
+                response.setData(save);
+                return ResponseEntity.ok(response);
+            }
+            response.setCodestado(200);
+            response.setEstado("ok");
+            response.setMensaje("La Entidad no existe");
+            response.setToken("");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        } catch (Exception e) {
+            response.setCodestado(500);
+            response.setEstado("Error Interno del Servidor");
+            response.setMensaje(e.getMessage());
+            response.setToken("");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
     }
-    
+
+    @PostMapping
+    public ResponseEntity<Response> post(@RequestBody Moneda input) {
+
+        Response response = new Response();
+        try {
+            Moneda save = monedaRepository.save(input);
+            response.setCodestado(200);
+            response.setEstado("ok");
+            response.setMensaje("");
+            response.setToken("");
+            response.setData(save);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.setCodestado(500);
+            response.setEstado("Error Interno del Servidor");
+            response.setMensaje(e.getMessage());
+            response.setToken("");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
 //    @PutMapping("/{id}")
 //    public ResponseEntity<?> put(@PathVariable String id, @RequestBody Moneda input) {
 //        return null;
 //    }
-    
-    @PostMapping
-    public ResponseEntity<?> post(@RequestBody Moneda input) {
-        Moneda save = monedaRepository.save(input);
-        return ResponseEntity.ok(save);
-    }
-    
 //    @DeleteMapping("/{id}")
 //    public ResponseEntity<?> delete(@PathVariable String id) {
 //        return null;
 //    }
-    
 }
