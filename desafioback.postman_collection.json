@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"dni\": \"76652784\",\r\n  \"nombre\": \"fernando\",\r\n  \"rol\": \"admin\",\r\n  \"contrasena\": \"abc\",\r\n  \"correo\": \"123\"\r\n}",
+							"raw": "{\r\n  \"dni\": \"76652784\",\r\n  \"nombre\": \"fernando\",\r\n  \"rol\": \"admin\",\r\n  \"contrasena\": \"admin@gmail.com\",\r\n  \"correo\": \"123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -222,7 +222,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"id\": 2,\r\n  \"nombre\": \"sss\"\r\n}",
+							"raw": "{\r\n  \"id\": 2,\r\n  \"nombre\": \"venta\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -276,7 +276,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nombre\": \"sol\",\r\n  \"valorCompra\": 1,\r\n  \"valorReal\": 1,\r\n  \"valorVenta\": 1\r\n}",
+							"raw": "{\r\n  \"nombre\": \"dolar\",\r\n  \"valorCompra\": 2,\r\n  \"valorReal\": 3,\r\n  \"valorVenta\": 4\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -348,7 +348,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"fecha\": \"2022-03-21T00:04:58\",\r\n  \"monto\": 10,\r\n  \"idmoneda_origen\": 2,\r\n  \"idmoneda_destino\": 3,  \r\n  \"idtipocambio\": 4,\r\n  \"idusuario\": 1  \r\n}",
+							"raw": "{\r\n  \"fecha\": \"2022-03-21T00:04:58\",\r\n  \"monto\": 10,\r\n  \"idmoneda_origen\": 3,\r\n  \"idmoneda_destino\": 3,  \r\n  \"idtipocambio\": 2,\r\n  \"idusuario\": 1  \r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -375,7 +375,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/transaccion/5",
+							"raw": "http://localhost:8080/transaccion/4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -383,7 +383,7 @@
 							"port": "8080",
 							"path": [
 								"transaccion",
-								"5"
+								"4"
 							]
 						}
 					},
