@@ -12,11 +12,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 //import javax.validation.constraints.Pattern;
 import lombok.Data;
 
 @Entity
+@Table()
 @Data
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Usuario implements Serializable  {
@@ -31,9 +34,9 @@ public class Usuario implements Serializable  {
     private String contrasena;
     
     @JsonIgnore
-    
+    @Transient
     @OneToOne(fetch = FetchType.LAZY,targetEntity = Transaccion.class)    
-    @JoinColumn(name = "usuario_id", nullable = true)
+    @JoinColumn(name = "transaccion_id", nullable = true)
     private Transaccion transaccion;
 
     public Usuario() {

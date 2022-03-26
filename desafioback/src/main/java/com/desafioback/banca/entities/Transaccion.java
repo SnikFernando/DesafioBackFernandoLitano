@@ -6,10 +6,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import lombok.Data;
 // @author GAMER HP
 
 @Entity
+@Table()
 @Data
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Transaccion {
@@ -26,10 +28,10 @@ public class Transaccion {
     private TipoCambio tipocambio;
     
     @OneToOne()    
-    @JoinColumn(name = "moneda_id")
+    @JoinColumn(name = "moneda_origen_id")
     private Moneda moneda_origen;
     @OneToOne()    
-    @JoinColumn(name = "moneda_id2")
+    @JoinColumn(name = "moneda_destino_id")
     private Moneda moneda_destino;
 
     @OneToOne()    

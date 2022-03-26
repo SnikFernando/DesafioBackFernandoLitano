@@ -146,7 +146,7 @@ public class TransaccionRestController {
             } else {
                 response.setCodestado(400);
                 response.setEstado("bad Request");
-                response.setMensaje("Id Incorrecto, verificar data");
+                response.setMensaje("Id's No Encontrados, verificar data");
                 response.setToken("");
                 response.setData(null);
                 return ResponseEntity.badRequest().body(response);

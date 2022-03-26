@@ -10,9 +10,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 // @author GAMER HP
 
 @Entity
+@Table()
 @Data
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TipoCambio {
@@ -22,8 +25,9 @@ public class TipoCambio {
     private long id;
     private String Nombre;
     @JsonIgnore
+    @Transient
     @OneToOne(fetch = FetchType.LAZY,targetEntity = Transaccion.class)    
-    @JoinColumn(name = "tipo_id", nullable = true)
+    @JoinColumn(name = "transaccion_id", nullable = true)
     private Transaccion transaccion;
 
     public TipoCambio() {

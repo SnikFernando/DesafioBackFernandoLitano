@@ -222,7 +222,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"id\": 2,\r\n  \"nombre\": \"venta\"\r\n}",
+							"raw": "{\r\n  \"id\": 2,\r\n  \"nombre\": \"compra\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -348,7 +348,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"fecha\": \"2022-03-21T00:04:58\",\r\n  \"monto\": 10,\r\n  \"idmoneda_origen\": 3,\r\n  \"idmoneda_destino\": 3,  \r\n  \"idtipocambio\": 2,\r\n  \"idusuario\": 1  \r\n}",
+							"raw": "{\r\n  \"fecha\": \"2022-03-21T00:04:58\",\r\n  \"monto\": 1000,\r\n  \"idmoneda_origen\": 2,\r\n  \"idmoneda_destino\": 1,  \r\n  \"idtipocambio\": 1,\r\n  \"idusuario\": 1  \r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -375,7 +375,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/transaccion/4",
+							"raw": "http://localhost:8080/transaccion/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -383,7 +383,7 @@
 							"port": "8080",
 							"path": [
 								"transaccion",
-								"4"
+								"1"
 							]
 						}
 					},
