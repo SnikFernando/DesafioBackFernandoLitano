@@ -82,7 +82,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"dni\": \"76652784\",\r\n  \"nombre\": \"fernando\",\r\n  \"rol\": \"admin\",\r\n  \"contrasena\": \"abc\",\r\n  \"correo\": \"123\"\r\n}",
+							"raw": "{\r\n  \"contrasena\": \"admin@gmail.com\",\r\n  \"correo\": \"123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -213,7 +213,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRoMCIsImlkIjoxLCJkbmkiOiI3NjY1Mjc4NCJ9.TJa6elN2e1gbs8uiS-EWx4pehuVUJoHh8TP6Eui9nNE",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRoMCIsImlkIjoxLCJleHAiOjE2NDgzOTk5ODQsImRuaSI6Ijc2NjUyNzg0In0.e34SGIleJP8xM0hCw8nJC7uh1MlUp8hO8thfWl7t66g",
 									"type": "string"
 								}
 							]
@@ -276,7 +276,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nombre\": \"dolar\",\r\n  \"valorCompra\": 2,\r\n  \"valorReal\": 3,\r\n  \"valorVenta\": 4\r\n}",
+							"raw": "{\r\n  \"nombre\": \"sol\",\r\n  \"valorCompra\": 1,\r\n  \"valorReal\": 1,\r\n  \"valorVenta\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -348,7 +348,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"fecha\": \"2022-03-21T00:04:58\",\r\n  \"monto\": 1000,\r\n  \"idmoneda_origen\": 2,\r\n  \"idmoneda_destino\": 1,  \r\n  \"idtipocambio\": 1,\r\n  \"idusuario\": 1  \r\n}",
+							"raw": "{\r\n  \"fecha\": \"2022-03-21T00:04:58\",\r\n  \"monto\": 1000,\r\n  \"idmoneda_origen\": 1,\r\n  \"idmoneda_destino\": 1,  \r\n  \"idtipocambio\": 1,\r\n  \"idusuario\": 1  \r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

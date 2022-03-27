@@ -1,10 +1,7 @@
 package com.desafioback.banca.controller;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
+
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.desafioback.banca.DaoImp.TransaccionImp;
 import com.desafioback.banca.entities.Response;
 import com.desafioback.banca.entities.TipoCambio;
@@ -15,9 +12,6 @@ import com.desafioback.banca.repository.UsuarioRepository;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -66,7 +60,15 @@ public class TipoCambioRestController {
                 return ResponseEntity.badRequest().body(response);
             }
 
-        } catch (Exception e) {
+        }catch(JWTVerificationException exception){
+            response.setCodestado(400);
+            response.setEstado("Bad Request");
+            response.setMensaje("Token Expirado o No valido");
+            response.setToken("");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+        catch (Exception e) {
             response.setCodestado(500);
             response.setEstado("Error Interno del Servidor");
             response.setMensaje(e.getMessage());
@@ -141,7 +143,15 @@ public class TipoCambioRestController {
             }           
             
 
-        } catch (Exception e) {
+        } catch(JWTVerificationException exception){
+            response.setCodestado(400);
+            response.setEstado("Bad Request");
+            response.setMensaje("Token No valido");
+            response.setToken("");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+        catch (Exception e) {
             response.setCodestado(500);
             response.setEstado("Error Interno del Servidor");
             response.setMensaje(e.getMessage());

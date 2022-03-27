@@ -3,6 +3,7 @@ package com.desafioback.banca.controller;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.desafioback.banca.DaoImp.TransaccionImp;
 import com.desafioback.banca.entities.Response;
 import com.desafioback.banca.entities.Usuario;
 import com.desafioback.banca.repository.UsuarioRepository;
@@ -28,6 +29,8 @@ public class UsuarioRestController {
 
     @Autowired
     UsuarioRepository usuarioRepository;
+    
+    TransaccionImp transaccionImp = new TransaccionImp();
 
     @GetMapping()
     public ResponseEntity<Response> list() {
@@ -121,13 +124,16 @@ public class UsuarioRestController {
         try {
             Usuario save = usuarioRepository.Login(input.getCorreo(), input.getContrasena());
             String token = "";
-            if (save != null) {
-                Algorithm algorithm = Algorithm.HMAC256("PAASSSSWORR123");
-                token = JWT.create()
-                        .withClaim("id", save.getId())
-                        .withClaim("dni", save.getDni())
-                        .withIssuer("auth0")
-                        .sign(algorithm);
+            if (save != null) {               
+                token = transaccionImp.Encode(save);
+                if(token.equals("")){
+                response.setCodestado(400);
+                response.setEstado("Bad Request");
+                response.setMensaje("Error al generar el token");
+                response.setToken("");
+                response.setData(null);  
+                    
+                }
                 response.setCodestado(200);
                 response.setEstado("ok");
                 response.setMensaje("");
@@ -135,8 +141,8 @@ public class UsuarioRestController {
                 response.setData(save);
                 return ResponseEntity.ok(response);
             }
-            response.setCodestado(200);
-            response.setEstado("ok");
+            response.setCodestado(400);
+            response.setEstado("Bad Request");
             response.setMensaje("El usurio no es valido");
             response.setToken("");
             response.setData(null);
