@@ -24,6 +24,8 @@ public class TipoCambio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String Nombre;
+    private String NacOrigen;
+    private String NacDestino;
     @JsonIgnore
     @Transient
     @OneToOne(fetch = FetchType.LAZY,targetEntity = Transaccion.class)    
@@ -60,6 +62,22 @@ public class TipoCambio {
 
     public void setTransaccion(Transaccion transaccion) {
         this.transaccion = transaccion;
+    }
+
+    public String getNacOrigen() {
+        return NacOrigen;
+    }
+
+    public void setNacOrigen(String NacOrigen) {
+        this.NacOrigen = NacOrigen;
+    }
+
+    public String getNacDestino() {
+        return NacDestino;
+    }
+
+    public void setNacDestino(String NacDestino) {
+        this.NacDestino = NacDestino;
     }
     
     

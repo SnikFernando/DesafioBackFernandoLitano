@@ -13,4 +13,7 @@ public interface MonedaRepository extends JpaRepository<Moneda, Long> {
     
     @Query("SELECT m FROM Moneda m WHERE m.id =?1 ")
     public Moneda getById(long id );
+    
+    @Query("SELECT m FROM Moneda m WHERE m.Nombre =?1 ")
+    public Moneda getByName(String Nombre);
 }

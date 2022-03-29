@@ -23,12 +23,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/usuario",
+							"raw": "http://localhost:9090/usuario",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "9090",
 							"path": [
 								"usuario"
 							]
@@ -42,12 +42,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/usuario",
+							"raw": "http://localhost:9090/usuario",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "9090",
 							"path": [
 								"usuario"
 							]
@@ -61,12 +61,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/usuario/1",
+							"raw": "http://localhost:9090/usuario/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "9090",
 							"path": [
 								"usuario",
 								"1"
@@ -90,12 +90,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/usuario/login",
+							"raw": "http://localhost:9090/usuario/login",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "9090",
 							"path": [
 								"usuario",
 								"login"
@@ -144,12 +144,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/tipocambio",
+							"raw": "http://localhost:9090/tipocambio",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "9090",
 							"path": [
 								"tipocambio"
 							]
@@ -164,7 +164,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nombre\": \"compra\"\r\n}",
+							"raw": "{\r\n  \"nombre\": \"compra\",\r\n  \"nacOrigen\":\"Ex\",\r\n  \"nacDestino\":\"Na\"\r\n\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -172,12 +172,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/tipocambio",
+							"raw": "http://localhost:9090/tipocambio",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "9090",
 							"path": [
 								"tipocambio"
 							]
@@ -191,12 +191,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/tipocambio/1",
+							"raw": "http://localhost:9090/tipocambio/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "9090",
 							"path": [
 								"tipocambio",
 								"1"
@@ -213,7 +213,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRoMCIsImlkIjoxLCJleHAiOjE2NDgzOTk5ODQsImRuaSI6Ijc2NjUyNzg0In0.e34SGIleJP8xM0hCw8nJC7uh1MlUp8hO8thfWl7t66g",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRoMCIsImlkIjoxLCJleHAiOjE2NDg1MjY3MTcsImRuaSI6Ijc2NjUyNzg0In0.IXYTbDgaAZEIDHLW6_oX5LU3RmHuuhx1GXdMNEqdO1g",
 									"type": "string"
 								}
 							]
@@ -222,7 +222,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"id\": 2,\r\n  \"nombre\": \"compra\"\r\n}",
+							"raw": "{\r\n  \"nombre\": \"venta\",\r\n  \"nacOrigen\":\"Na\",\r\n  \"nacDestino\":\"Ex\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -230,12 +230,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/tipocambio/1",
+							"raw": "http://localhost:9090/tipocambio/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "9090",
 							"path": [
 								"tipocambio",
 								"1"
@@ -250,15 +250,15 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/tipocambio/1",
+							"raw": "http://localhost:9090/tipocambio/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "9090",
 							"path": [
 								"tipocambio",
-								"1"
+								"2"
 							]
 						}
 					},
@@ -276,7 +276,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nombre\": \"sol\",\r\n  \"valorCompra\": 1,\r\n  \"valorReal\": 1,\r\n  \"valorVenta\": 1\r\n}",
+							"raw": "{\r\n  \"nombre\": \"sol\",\r\n  \"valorCompra\": 1,\r\n  \"valorReal\": 1,\r\n  \"valorVenta\": 1,\r\n  \"isnacional\":true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -284,12 +284,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/moneda",
+							"raw": "http://localhost:9090/moneda",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "9090",
 							"path": [
 								"moneda"
 							]
@@ -303,12 +303,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/moneda",
+							"raw": "http://localhost:9090/moneda",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "9090",
 							"path": [
 								"moneda"
 							]
@@ -322,12 +322,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/moneda/2",
+							"raw": "http://localhost:9090/moneda/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "9090",
 							"path": [
 								"moneda",
 								"2"
@@ -348,7 +348,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"fecha\": \"2022-03-21T00:04:58\",\r\n  \"monto\": 1000,\r\n  \"idmoneda_origen\": 1,\r\n  \"idmoneda_destino\": 1,  \r\n  \"idtipocambio\": 1,\r\n  \"idusuario\": 1  \r\n}",
+							"raw": "{\r\n  \"fecha\": \"2022-03-21T00:04:58\",\r\n  \"monto\": 1000,\r\n  \"idmoneda_origen\": 1,\r\n  \"idmoneda_destino\": 2,  \r\n  \"idtipocambio\": 1,\r\n  \"idusuario\": 1  \r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -356,12 +356,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/transaccion",
+							"raw": "http://localhost:9090/transaccion",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "9090",
 							"path": [
 								"transaccion"
 							]
@@ -375,12 +375,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/transaccion/1",
+							"raw": "http://localhost:9090/transaccion/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "9090",
 							"path": [
 								"transaccion",
 								"1"
@@ -395,12 +395,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/transaccion",
+							"raw": "http://localhost:9090/transaccion",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "9090",
 							"path": [
 								"transaccion"
 							]

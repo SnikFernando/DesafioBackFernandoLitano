@@ -19,32 +19,27 @@ public class TransaccionImp  {
     
     public double Calculo(Moneda monedaorigen,Moneda monedadestino,TipoCambio tipo,Usuario usuario,TransaccionDtoImp transaccion){
         double total =0;
-        String tipoCambio = tipo.getNombre();
-        switch (tipoCambio) {
-            case "compra":{ //modena extranjera a nacional
-                double monto = transaccion.getMonto();
-                double monedaOrigen = monedaorigen.getValorCompra();
-                total = (monto * monedaOrigen);
-                break;
-            }              
-            case "venta":{//nacional a extrajenra
-                double monto = transaccion.getMonto();
-                double monedaDestino= monedadestino.getValorVenta();
-                total = (monto / monedaDestino);
-                break;
-            } 
-            case "divisas":{//entre extranjeras
-                double monto = transaccion.getMonto();
-                double monedaOrigen = monedaorigen.getValorCompra();
-                double monedaDestino= monedadestino.getValorReal();
-                total = (monto * monedaOrigen)/monedaDestino;
-                break;
-            } 
-            default:
-                return total;
-        }
+        String NacOrigen= tipo.getNacOrigen();
+        String NacDestino= tipo.getNacDestino();
         
+        if (NacOrigen.equals("Ex") && NacDestino.equals("Na")) {
+            double monto = transaccion.getMonto();
+            double monedaOrigen = monedaorigen.getValorCompra();
+            total = (monto * monedaOrigen);
+
+        } else if (NacOrigen.equals("Na") && NacDestino.equals("Ex")) {
+            double monto = transaccion.getMonto();
+            double monedaDestino = monedadestino.getValorVenta();
+            total = (monto / monedaDestino);
+        } else if (NacOrigen.equals("Ex") && NacDestino.equals("Ex")){
+            double monto = transaccion.getMonto();
+            double monedaOrigen = monedaorigen.getValorCompra();
+            double monedaDestino = monedadestino.getValorReal();
+            total = (monto * monedaOrigen) / monedaDestino;
+        }
         return total;
+        
+        
     }
     
     public long Decode(String token){

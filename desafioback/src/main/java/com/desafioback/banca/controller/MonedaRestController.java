@@ -82,13 +82,33 @@ public class MonedaRestController {
 
         Response response = new Response();
         try {
-            Moneda save = monedaRepository.save(input);
-            response.setCodestado(200);
-            response.setEstado("ok");
-            response.setMensaje("");
+            Moneda existe = monedaRepository.getByName(input.getNombre());
+            if(existe==null){
+                if(input.isIsnacional()){
+                    if (input.getValorCompra() != 1 || input.getValorReal() != 1 || input.getValorVenta() != 1) {
+                        response.setCodestado(400);
+                        response.setEstado("Bad Request");
+                        response.setMensaje("La moneda nacional deben tener valor 1 en VC, VR y VV");
+                        response.setToken("");
+                        response.setData(null);
+                        return ResponseEntity.badRequest().body(response);
+                    }
+                }
+                Moneda save = monedaRepository.save(input);
+                response.setCodestado(200);
+                response.setEstado("ok");
+                response.setMensaje("");
+                response.setToken("");
+                response.setData(save);
+                return ResponseEntity.ok(response); 
+            }
+            response.setCodestado(400);
+            response.setEstado("Bad Request");
+            response.setMensaje("La Moneda ya existe");
             response.setToken("");
-            response.setData(save);
-            return ResponseEntity.ok(response);
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+            
         } catch (Exception e) {
             response.setCodestado(500);
             response.setEstado("Error Interno del Servidor");

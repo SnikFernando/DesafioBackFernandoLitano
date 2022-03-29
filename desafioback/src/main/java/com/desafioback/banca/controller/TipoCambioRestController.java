@@ -117,6 +117,7 @@ public class TipoCambioRestController {
                 
                 TipoCambio tipo = tipoCambioRepository.getById(id);
                 if (tipo != null) {
+                    input.setId(id);                    
                     TipoCambio save = tipoCambioRepository.save(input);
                     response.setCodestado(200);
                     response.setEstado("ok");
@@ -166,13 +167,24 @@ public class TipoCambioRestController {
 
         Response response = new Response();
         try {
-            TipoCambio save = tipoCambioRepository.save(input);
-            response.setCodestado(200);
-            response.setEstado("ok");
-            response.setMensaje("");
+            TipoCambio existe = tipoCambioRepository.getByName(input.getNombre());
+            if(existe==null){
+                TipoCambio save = tipoCambioRepository.save(input);
+                response.setCodestado(200);
+                response.setEstado("ok");
+                response.setMensaje("");
+                response.setToken("");
+                response.setData(save);
+                return ResponseEntity.ok(response);  
+            }
+            
+            response.setCodestado(400);
+            response.setEstado("Bad Request");
+            response.setMensaje("Tipo de cambio ya existe");
             response.setToken("");
-            response.setData(save);
-            return ResponseEntity.ok(response);
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+            
         } catch (Exception e) {
             response.setCodestado(500);
             response.setEstado("Error Interno del Servidor");

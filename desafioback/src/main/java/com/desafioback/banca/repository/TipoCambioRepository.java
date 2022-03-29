@@ -13,4 +13,7 @@ public interface TipoCambioRepository extends JpaRepository<TipoCambio, Long> {
     
     @Query("SELECT t FROM TipoCambio t WHERE t.id =?1 ")
     public TipoCambio getById(long id );
+    
+    @Query("SELECT t FROM TipoCambio t WHERE t.Nombre =?1 ")
+    public TipoCambio getByName(String nombre);
 }

@@ -26,6 +26,8 @@ public class Moneda {
     private Double ValorCompra;
     private Double ValorReal;
     private Double ValorVenta;
+    private boolean isnacional;
+    
     @JsonIgnore
     @Transient
     @OneToOne(fetch = FetchType.LAZY,targetEntity = Transaccion.class)    
@@ -39,8 +41,6 @@ public class Moneda {
         this.Id = Id;
        
     }
-
-    
     
     public long getId() {
         return Id;
@@ -88,6 +88,14 @@ public class Moneda {
 
     public void setTransaccion(Transaccion transaccion) {
         this.transaccion = transaccion;
+    }
+
+    public boolean isIsnacional() {
+        return isnacional;
+    }
+
+    public void setIsnacional(boolean isnacional) {
+        this.isnacional = isnacional;
     }
     
     
